@@ -1,3 +1,5 @@
+const Product = require('../models/Product');
+
 // index page
 exports.index = function(req, res, next){
     res.send('Home page');

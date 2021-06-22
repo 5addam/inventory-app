@@ -32,7 +32,7 @@ router.get('/:id/update', product_controller.product_update_get);
 router.post('/:id/update', product_controller.product_update_post);
 
 // GET req for single Product (Details page)
-router.get('/:id', product_controller.product_detail);
+router.get('/:model', product_controller.product_detail);
 
 
 

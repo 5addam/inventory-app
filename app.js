@@ -6,9 +6,18 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var productRouter = require('./routes/products');
+var productRouter = require('./routes/productRouter');
+var brandRouter = require('./routes/brandRouter');
+var categoryRouter = require('./routes/categoryRouter');
 
 var app = express();
+
+// Set up mongoose connection
+var mongoose = require('mongoose');
+var mongoDB = 'mongodb+srv://db_admin:db_admin_password@cluster0.fykun.mongodb.net/inverntory_db?retryWrites=true&w=majority';
+mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -23,6 +32,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/product', productRouter);
+app.use('/brand', brandRouter);
+app.use('/category', categoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

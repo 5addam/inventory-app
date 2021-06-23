@@ -12,4 +12,12 @@ const BrandSchema = new Schema(
     }
 );
 
+
+// Virtual for brand's url
+BrandSchema
+.virtual('url')
+.get(function(){
+    return '/brand/' + this.name;
+});
+
 module.exports = mongoose.model('Brand', BrandSchema)

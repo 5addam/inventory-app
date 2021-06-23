@@ -1,0 +1,31 @@
+extends layout 
+block content 
+
+    h1=title 
+
+    div.container
+        div.row
+            div.col
+                image(src=product.image_url style='width:450px;height:450px;')
+            div.col
+                h4 #{product.title}
+                hr.card-divider
+                p Rs. #{product.price}
+                h5 #{product.model}
+                h5 Item Shape: #{product.item_shap}
+                h5 Display Type: #{product.display_type}
+                h5 Band Color: #{product.band_color}
+                h5 Dial Color: #{product.dial_color}
+                if product.stock > 0
+                    p (Availability) In stock: #{product.stock}
+                else
+                    p Out of stock
+                div(style="display:flex;flex-direction:row;")
+                    p(style='font-size:15px;font-weight:bold;') Categories:
+                    each cat, index in product.category
+                        p(style='font-size:15px') #{cat.name}
+                        if index < product.category.length - 1
+                            |,
+        div.row.mt-5
+        h5 Product Description 
+        p.p-2 #{product.summary}

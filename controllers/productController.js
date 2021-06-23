@@ -7,12 +7,35 @@ exports.index = function(req, res, next){
 
 // Display all of the products
 exports.all_products = function(req, res){
-    res.send('All Products list not implemented yet.');
+    Product.find({}, 'model price image_url')
+        .populate('brand')
+        .exec(function (err, list_products){
+            if(err){
+                return next(err);
+            }
+            // Successful, so render
+            res.render('product_list',{title: 'Products', product_list: list_products});
+        });
+    
 };
 
 // Detail page for a specific product
 exports.product_detail = function(req, res){
-    res.send('Detail page of the product is not implemented yet.');
+    Product.findOne({'model': req.params.model})
+        .populate('brand')
+        .populate('category')
+        .exec(function (err, product){
+            if(err){
+                return next(err);
+            }
+            if(product==null){//No result
+                var err = new Error('Product not found!!');
+                err.status =404;
+                return next(err);
+            }
+            // Successful. So, render
+            res.render('product_detail', {title: 'Product Detail', product: product});
+        })
 };
 
 // Display product create form on GET

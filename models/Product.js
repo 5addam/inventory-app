@@ -19,4 +19,10 @@ const ProductSchema = new Schema(
     }
 );
 
+ProductSchema
+.virtual('url')
+.get(function(){
+    return '/product/' + this.model;
+});
+
 module.exports = mongoose.model('Product', ProductSchema)

@@ -2,4 +2,22 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #{title}
+  p Welcome to #[em Watches Inventroy App], a very basic Express Website 
+
+  - brand_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = a.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; });
+  each brand in brand_list 
+    div.card.mb-3
+      img.card-img.top(src=brand.image_url alt="brand image")
+      div.card-body
+        h5.card-title #{brand.name}
+  //- h1 Dynamic content 
+
+  //- if error 
+  //-   p Error getting data from db 
+  //- else 
+  //-   p The Inventory has the following record counts: 
+
+  //-   ul 
+  //-     li #[strong Products:] !{data.product_count}
+  //-     li #[strong Brands:] !{data.brand_count}
+  //-     li #[strong Categories:] !{data.category_count}

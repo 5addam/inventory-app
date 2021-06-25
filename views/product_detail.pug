@@ -27,9 +27,9 @@ block content
                         if index < product.category.length - 1
                             |,
         div.row.mt-5
-        h5 Product Description 
-        p.p-2 #{product.summary}
-        div.row.justify-content-end
+            h5 Product Description 
+            p.p-2 #{product.summary}
+        div.row.justify-content-end.mb-3.mt-3
             a.float(href=product.edit_url+'/update') 
                 i.fas.fa-edit.my-float
             a.float(href=product.edit_url+'/delete') 

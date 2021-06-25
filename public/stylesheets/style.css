@@ -13,13 +13,14 @@ body {
 }
 .navbar{
   border-bottom: 1px solid black;
-  background-color: #c9c9c9
+  background-color: rgba(0, 0, 0, 0.89);
 }
 .navbar-brand{
   font-size: 20px;
   font-weight: bold;
   font-family: "Cambria, Cochin, Georgia, Times, 'Times New Roman', serif";
   margin: 5px;
+  color: whitesmoke;
 }
 .navbar-collapse {
   justify-content: center;

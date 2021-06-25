@@ -16,13 +16,13 @@ block content
                     - brands.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
                     for brand in brands
                         if product 
-                            // Handle GET form, where product.brand is an object, and POST form, where it is a string.
+                            //- Handle GET form, where product.brand is an object, and POST form, where it is a string.
                             option(
-                                value=brand._id 
-                                select=(
-                                    brand._id.toString()===product.brand._id
-                                    || brand._id.toString()===product.brand
-                                ) ? 'selected' : false
+                            value=brand_id
+                            selected=(
+                                brand._id.toString()==product.brand._id
+                                || brand._id.toString()==product.brand
+                            ) ? 'selected' : false
                             ) #{brand.name}
                         else 
                             option(value=brand._id) #{brand.name}
@@ -36,7 +36,7 @@ block content
                                 input.form-check-input(type='checkbox' name='category' id=category._id value=category._id checked=category.checked )
                                 label.form-check-label(for=category._id) #{category.name}
             div.form-floating.mb-3
-                textarea.form-control(type='textarea' placeholder='Product description..' style='height: 200px;' name='summary' required='true' value=(undefined===product ? '' : product.summary ) )
+                textarea.form-control(type='textarea' placeholder='Product description..' style='height: 200px;' name='summary' required='true') #{undefined===product ? '' : product.summary}
                 label(for='summary') Description:
             div.form-floating.mb-3
                 input.form-control(type='text' placeholder='Display type of the product' name='display_type', value=(undefined===product ? '' : product.display_type) required='true') 

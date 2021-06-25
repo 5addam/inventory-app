@@ -25,4 +25,10 @@ ProductSchema
     return '/product/' + this.model;
 });
 
+ProductSchema
+.virtual('edit_url')
+.get(function(){
+    return '/product/' + this._id;
+});
+
 module.exports = mongoose.model('Product', ProductSchema)

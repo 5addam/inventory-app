@@ -1,0 +1,77 @@
+extends layout 
+
+block content 
+    h1.text-center.mb-3.mt-3=title 
+
+    div.container 
+        form.mb-5(method='POST' action='')
+            div.form-floating.mb-3
+                input.form-control(type='text' placeholder='Title of the product' name='title', value=(undefined===product ? '' : product.title) required='true' )
+                label(for='title') Title: 
+            div.form-floating.mb-3
+                input.form-control(type='text' placeholder='Model of the product' name='model', value=(undefined===product ? '' : product.model) required='true')
+                label.form-label(for='model') Model: 
+            div.form-floating.mb-3
+                select.form-control(type='select' placeholder='Select Brand' name='brand' required='true')
+                    - brands.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = b.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;});
+                    for brand in brands
+                        if product 
+                            // Handle GET form, where product.brand is an object, and POST form, where it is a string.
+                            option(
+                                value=brand._id 
+                                select=(
+                                    brand._id.toString()===product.brand._id
+                                    || brand._id.toString()===product.brand
+                                ) ? 'selected' : false
+                            ) #{brand.name}
+                        else 
+                            option(value=brand._id) #{brand.name}
+                label(for='brand') Select Brand: 
+            div.form-group.mb-3
+                label.form-label Category: 
+                div 
+                    for category in categories 
+                        div(style='display: inline; padding-right:10px')
+                            div.form-check.form-check-inline
+                                input.form-check-input(type='checkbox' name='category' id=category._id value=category._id checked=category.checked )
+                                label.form-check-label(for=category._id) #{category.name}
+            div.form-floating.mb-3
+                textarea.form-control(type='textarea' placeholder='Product description..' style='height: 200px;' name='summary' required='true' value=(undefined===product ? '' : product.summary ) )
+                label(for='summary') Description:
+            div.form-floating.mb-3
+                input.form-control(type='text' placeholder='Display type of the product' name='display_type', value=(undefined===product ? '' : product.display_type) required='true') 
+                label(for='display_type') Display Type: 
+            div.form-floating.mb-3
+                input.form-control(type='text' placeholder='Dail color of the product' name='dial_color', value=(undefined===product ? '' : product.dial_color) required='true') 
+                label(for='dial_color') Dail Color: 
+            div.form-floating.mb-3
+                input.form-control(type='text' placeholder='Band color of the product' name='band_color', value=(undefined===product ? '' : product.band_color) required='true') 
+                label(for='band_color') Band Color: 
+            div.form-floating.mb-3
+                select.form-control(type='select' placeholder='Select dail shape' name='dial_shape' required='true')
+                    option(value='Round' selected=(undefined===product || product.item_shape!='Round') ? false : 'selected') Round
+                    option(value='Rectangle' selected=(undefined===product || product.item_shape!='Rectangle') ? false : 'selected') Rectangle
+                    option(value='Tank' selected=(undefined===product || product.item_shape!='Tank') ? false : 'selected') Tank
+                    option(value='Square' selected=(undefined===product || product.item_shape!='Square') ? false : 'selected') Square 
+                    option(value='Ovel' selected=(undefined===product || product.item_shape!='Ovel') ? false : 'selected') Ovel
+                    option(value='Carre' selected=(undefined===product || product.item_shape!='Carre') ? false : 'selected') Carre
+                label.form-label(for='dial_shape') Select dial shape: 
+            div.form-floating.mb-3
+                input.form-control(type='text' name='stock' required='true' value=(undefined===product ? 0 : product.stock) )
+                label(for='stock') No. in Stocks:
+            div.form-floating.mb-3
+                input.form-control(type='text' name='price' placeholder='' required='true' value=(undefined===product ? '' : product.price) )
+                label.form-label(for='price') Enter price (in pkr):
+            div.form-floating.mb-3
+                input.form-control(type='text' name='image_url' placeholder='' required='true' value=(undefined===product ? '' : product.image_url) )
+                label.form-label(for='image_url') Enter image url:
+
+            button.btn-btn-primary(type='submit') Submit 
+
+        if errors 
+            ul 
+                for error in errors 
+                    li!=error.msg 
+
+
+

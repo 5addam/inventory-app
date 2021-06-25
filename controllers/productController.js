@@ -214,25 +214,46 @@ exports.product_create_post = [
                     return next(err);
 
                 })
-            // product.save(function (err) {
-            //     if (err) {
-            //         return next(err);
-            //     }
-            //     // Successful - redirect to new product detail page
-            //     res.redirect(product.url);
-            // });
         }
     }
 ];
 
 // Display product delete form on GET
-exports.product_delete_get = function (req, res) {
-    res.send('Delete product GET method is not implemented yet');
+exports.product_delete_get = function (req, res, next) {
+    Product.findById(req.params.id)
+        .populate('brand')
+        .populate('category')
+        .exec(function (err, product) {
+            if (err) {
+                return next(err);
+            }
+            if (product == null) { //No result
+                // var err = new Error('Product not found!!');
+                // err.status = 404;
+                // return next(err);
+                res.redirect('/product.all');
+            }
+
+            // Successful. So, render
+            res.render('product_delete', {
+                title: 'Delete Product',
+                product: product
+            });
+        })
 };
 
 // Handle product delete on POST
 exports.product_delete_post = function (req, res) {
-    res.send('Delete product POST method is not implemented yet');
+
+    Product.findByIdAndRemove(req.params.id, function (err) {
+        if (err) {
+            return (err);
+        }
+
+        // Success - object deleted
+        // show product list
+        res.redirect('/product/all');
+    })
 };
 
 // Display product update form on GET.
@@ -387,8 +408,10 @@ exports.product_update_post = [
         } else {
             // Form data is valid. Update the record
 
-            Product.findByIdAndUpdate(req.params.id, product, {}, function(err, updatedProduct){
-                if(err){return next(err);}
+            Product.findByIdAndUpdate(req.params.id, product, {}, function (err, updatedProduct) {
+                if (err) {
+                    return next(err);
+                }
 
                 // Successful - redirect to product detail page.
                 res.redirect(updatedProduct.url);

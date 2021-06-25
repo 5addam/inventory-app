@@ -85,3 +85,9 @@ body {
  .my-float{
    margin-top: 22px;
  }
+
+/* DELETE PRODUCT BUTTONS */
+ .d-products.btns{
+   display: flex;
+   align-items: flex-end;
+ }

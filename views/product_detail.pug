@@ -19,7 +19,7 @@ block content
                 if product.stock > 0
                     p (Availability) In stock: #{product.stock}
                 else
-                    p Out of stock
+                    p Availability: Out of stock
                 div(style="display:flex;flex-direction:row;")
                     p(style='font-size:15px;font-weight:bold;') Categories:
                     each cat, index in product.category
@@ -32,5 +32,5 @@ block content
         div.row.justify-content-end
             a.float(href=product.edit_url+'/update') 
                 i.fas.fa-edit.my-float
-            a.float(href=product.url+'/delete') 
+            a.float(href=product.edit_url+'/delete') 
                 i.fas.fa-trash-alt.my-float 

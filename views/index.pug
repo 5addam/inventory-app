@@ -2,7 +2,6 @@ extends layout
 
 block content
   h1= title
-  p Welcome to #[em Watches Inventroy App], a very basic Express Website 
 
   - brand_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = a.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; });
   each brand in brand_list 

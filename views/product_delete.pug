@@ -1,0 +1,19 @@
+extends layout 
+block content 
+    h1=title 
+
+    div.card.container(style='max-widhth: 340px;')
+        h5.card-header Are you sure you want to delete this product?
+        div.row.g-0
+            div.col-md-4
+                img.img-fluid.rounder-start(src=product.image_url)
+            div.col-md-8
+                div.card-body
+                    h5.card-title #{product.title}            
+                    p.card-text #{product.model}
+                    form(method='POST', action='')
+                        div.form-group
+                            input(type='hidden' name='productId' value=product._id required='true')
+                        div.d-products.btns
+                            button.btn.btn-primary(type=submit style='margin:10px') Yes 
+                            a.btn.btn-primary.ml-5(href=product.url style='margin:10px') No

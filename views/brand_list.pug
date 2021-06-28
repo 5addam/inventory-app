@@ -1,0 +1,9 @@
+extends layout 
+block content 
+    h1=title 
+
+    div.brand-list-container
+        for brand in brand_list 
+            a.brand-item-row(href=brand.url)
+                img.brand-img(src=brand.image_url)
+                h5.brand-title #{brand.name}

@@ -1,0 +1,33 @@
+extends layout 
+block content 
+    h2.text-center.mt-5=title
+
+    .container
+        .card.mb-3
+            img.card-img-top(src=brand.image_url, alt='brand image' style='height:450px;')
+            .card-body 
+                h5.card-title #{brand.name}
+                p.card-text #{brand.about}
+                ul.list-group.mb-3
+                    li.list-group-item Founders: #{brand.founders}
+                    li.list-group-item Located At: #{brand.headquarters}
+                a.card-link(href=brand.website_url target='_blank') Visit Official Webiste
+        
+        if products.length > 0
+            h5.mt-3-mb-3 List of available #{brand.name} watches:
+            div.product-list-container
+                div.row
+                    each product in products
+                        div.card(style='width: 18rem;')  
+                            img.card-img-top(src=product.image_url alt="product-img")
+                            div.card-body
+                                h5.card-title #{product.model}
+                            ul.list-group.list-group-flush 
+                                li.list-group-item Brand: #{product.brand.name}
+                                li.list-group-item Price: Rs.#{product.price}
+                            div.card-body
+                                a.card-link(href=product.url) View Details 
+        else 
+            h5 No #{brand.name} watches available 
+            a.btn.btn-primary.mb-3(href='/product/create') Add Watch
+

@@ -30,6 +30,6 @@ router.get('/:id/update', brand_controller.brand_update_get);
 router.post('/:id/update', brand_controller.brand_update_post);
 
 // GET req: Detail page
-router.get('/:id', brand_controller.brand_detail);
+router.get('/:name', brand_controller.brand_detail);
 
 module.exports = router

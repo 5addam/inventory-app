@@ -17,6 +17,13 @@ const BrandSchema = new Schema(
 BrandSchema
 .virtual('url')
 .get(function(){
+    return '/brand/' + this.name;
+});
+
+// Virtual for edit-brand's url
+BrandSchema
+.virtual('edit_url')
+.get(function(){
     return '/brand/' + this._id;
 });
 

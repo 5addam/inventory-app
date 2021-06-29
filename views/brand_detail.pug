@@ -12,7 +12,7 @@ block content
                     li.list-group-item Founders: #{brand.founders}
                     li.list-group-item Located At: #{brand.headquarters}
                 a.card-link(href=brand.website_url target='_blank') Visit Official Webiste
-        
+
         if products.length > 0
             h5.mt-3-mb-3 List of available #{brand.name} watches:
             div.product-list-container
@@ -30,4 +30,10 @@ block content
         else 
             h5 No #{brand.name} watches available 
             a.btn.btn-primary.mb-3(href='/product/create') Add Watch
+
+        div.row.justify-content-center.mb-3.mt-3
+            a.float(href=brand.edit_url+'/update') 
+                i.fas.fa-edit.my-float
+            a.float(href=brand.edit_url+'/delete') 
+                i.fas.fa-trash-alt.my-float 
 

@@ -1,0 +1,18 @@
+extends layout 
+block content 
+    h1.text-center.m-3=title 
+
+    .container
+        form.mb-5(method='POST' action='')
+            .form-floating.mb-3 
+                input.form-control(type='text' placeholder='Category Name' name='name' value=(undefined===category ? '': category.name) required='true') 
+                label(for='name') Name:
+            .form-floating.mb-3 
+                input.form-control(type='text' placeholder='Image URL' name='image_url' required='true' value=(undefined===category ? '' : category.image_url))
+                label(for='image_url') Image url:
+            button.btn.btn-primary(type='submit') Submit
+        
+        if errors 
+            ul 
+                for err in errors 
+                    li!=err.msg

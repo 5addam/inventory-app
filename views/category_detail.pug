@@ -1,0 +1,29 @@
+extends layout 
+block content 
+    //- h1 #{category.name}es
+
+    div.category-details-container
+        .row
+            img.banner(src=category.image_url)
+            h5.title #{category.name}
+
+
+    div.product-list-container
+        div.row
+            each product in products
+                div.card(style='width: 18rem;')  
+                    img.card-img-top(src=product.image_url alt="product-img")
+                    div.card-body
+                        h5.card-title #{product.model}
+                    ul.list-group.list-group-flush 
+                        li.list-group-item Brand: #{product.brand.name}
+                        li.list-group-item Price: Rs.#{product.price}
+                    div.card-body
+                        a.card-link(href=product.url) View Details 
+
+    div.row.justify-content-center.mb-3.mt-3
+        a.float(href=category.edit_url+'/update') 
+            i.fas.fa-edit.my-float
+        a.float(href=category.edit_url+'/delete') 
+            i.fas.fa-trash-alt.my-float 
+

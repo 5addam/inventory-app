@@ -103,7 +103,7 @@ exports.brand_detail = function (req, res, next) {
 // Display brand create form on GET
 exports.brand_create_get = function (req, res) {
 
-    res.render('brand_create', {
+    res.render('brand_form', {
         title: 'Add New Brand'
     })
 };

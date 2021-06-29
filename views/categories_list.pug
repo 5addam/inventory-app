@@ -1,0 +1,13 @@
+extends layout 
+block content 
+    h1=title 
+
+    div.brand-list-container
+        for category in categories_list 
+            a.brand-item-row(href=category.url)
+                img.brand-img(src=category.image_url)
+                h5.brand-title #{category.name}
+
+        div.row.mt-5.mb-5
+            a.float(href='/category/create') 
+                i.fas.fa-edit.my-float

@@ -1,0 +1,32 @@
+extends layout 
+block content 
+
+    h1.text-center.mb-3.mt-3.p-3=title 
+
+    .container
+        form.mb-5(method='POST' action='')
+            .form-floating.mb-3 
+               input.form-control(type='text' placeholder='Name of the Brand' name='name' value=(undefined===brand ? '': brand.name) required='true') 
+               label(for='name') Name:
+            .form-floating.mb-3 
+                textarea.form-control(type='textarea' placeholder='About brand' name='about' required='true' style='height: 200px;') #{undefined===brand ? '' : brand.about}
+                label(for='about') About: 
+            .form-floating.mb-3 
+               input.form-control(type='text' placeholder='Enter brand\'s founders name' name='founders' value=(undefined===brand ? '': brand.founders) required='true') 
+               label(for='founder') Founders name(s):
+            .form-floating.mb-3 
+               input.form-control(type='text' placeholder='Brand\'s Headquarters location' name='headquarters' value=(undefined===brand ? '': brand.headquarters) required='true') 
+               label(for='founder') Headquarters location:
+            .form-floating.mb-3 
+               input.form-control(type='text' placeholder='Enter brand\'s image url' name='image_url' value=(undefined===brand ? '': brand.image_url) required='true') 
+               label(for='image_url') Image url:
+            .form-floating.mb-3 
+               input.form-control(type='text' placeholder='Enter brand\'s official wensite\'s url' name='website_url' value=(undefined===brand ? '': brand.website_url) required='true') 
+               label(for='website_url') Website's url:
+
+            button.btn.btn-primary(type='submit') Submit
+        
+        if errors 
+            ul
+                for error in errors 
+                    li!=error.msg 

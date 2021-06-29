@@ -1,6 +1,11 @@
 const Brand = require('../models/Brand');
 const Product = require('../models/Product');
 const async = require('async');
+const {
+    body,
+    validationResult
+} = require('express-validator');
+
 
 // Display all Brands.
 exports.all_brands = function (req, res) {
@@ -58,13 +63,91 @@ exports.brand_detail = function (req, res, next) {
 
 // Display brand create form on GET
 exports.brand_create_get = function (req, res) {
-    res.send('NOT IMPLEMENTED: GET brand create form.');
+
+    res.render('brand_create', {
+        title: 'Add New Brand'
+    })
 };
 
 // Handle brand create form on POST
-exports.brand_create_post = function (req, res) {
-    res.send('NOT IMPLEMENTED: POST brand create form.');
-};
+exports.brand_create_post = [
+
+    // Validate and sanitize fields
+    body('name', 'Name must not be empty.').trim().isLength({
+        min: 3
+    }).escape(),
+    body('about', 'About must contain at least 10 characters').trim().isLength({
+        min: 10
+    }).escape(),
+    body('founders').trim().isLength({
+        min: 1
+    }).escape().withMessage('Founders name must be specified')
+    .matches(/([a-zA-Z\s,]+)/).withMessage('Invalid characters found in founders name. Founders name must be seperated by "," only.'),
+    body('headquarters', 'Headquarters location must be specified').trim().isLength({
+        min: 1
+    }).escape(),
+    body('image_url').isURL().withMessage('Please provide a proper image url.'),
+    body('website_url').isURL().withMessage('Please provide a proper webiste url.'),
+
+    // Process req after validation and sanitization.
+    (req, res, next) => {
+
+        // Extract validation errors from the req
+        const errors = validationResult(req);
+
+        // Create a Brand object with escaped and trimmed data.
+        const brand = new Brand({
+            name: req.body.name,
+            about: req.body.about,
+            founders: req.body.founders,
+            headquarters: req.body.headquarters,
+            image_url: req.body.image_url,
+            website_url: req.body.website_url
+        });
+
+        // check for errors
+        if (!errors.isEmpty()) {
+            // There are error in submitted data. Render the form again with sanitized values and show error messages.
+
+            res.render('brand_create', {
+                title: 'Add New Brand',
+                brand: brand,
+                errors: errors.array()
+            });
+            return;
+        } else {
+            // submitted form data is valid
+
+            // Check if brand already exists in the database
+            Brand.findOne({
+                    'name': brand.name
+                })
+                .exec(function (err, old_brand) {
+                    if (err) {
+                        return next(err);
+                    }
+                    if (old_brand == null) {
+                        // Brand does not exist in the db
+                        // Save the brand
+                        brand.save(function (err) {
+                            if (err) {
+                                return next(err);
+                            }
+                            // Success - redirect to the brand detail page
+                            res.redirect(brand.url);
+                        })
+                        return;
+
+                    }
+                    // brand already exists in db
+                    // show err message
+                    var err = new Error('Same name Brand already exsits in the database.')
+                    return next(err);
+                })
+        }
+    }
+
+];
 
 // Display brand delete form on GET
 exports.brand_delete_get = function (req, res) {
@@ -78,7 +161,7 @@ exports.brand_delete_post = function (req, res) {
 
 // Display brand update form on GET
 exports.brand_update_get = function (req, res) {
-    res.send('NOT IMPLEMENTED: GET brand update form.');
+    
 };
 
 // Handle brand update form on POST

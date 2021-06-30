@@ -190,12 +190,62 @@ exports.brand_create_post = [
 
 // Display brand delete form on GET
 exports.brand_delete_get = function (req, res) {
-    res.send('NOT IMPLEMENTED: GET brand delete form.');
+    async.parallel({
+        brand: function (callback) {
+            Brand.findById(req.params.id).exec(callback)
+        },
+        brand_products: function (callback) {
+            Product.find({
+                'brand': req.params.id
+            }).populate('brand').exec(callback)
+        },
+    }, function (err, results) {
+        if (err) {
+            return next(err);
+        }
+        if (results.brand == null) { // No results
+            res.redirect('/brand/all');
+        }
+        // Success - so, render
+        res.render('brand_delete', {
+            title: 'Delete Brand',
+            brand: results.brand,
+            brand_products: results.brand_products
+        });
+    });
 };
 
 // Handle brand delete form on POST
 exports.brand_delete_post = function (req, res) {
-    res.send('NOT IMPLEMENTED: POST brand delete form.');
+    async.parallel({
+        brand: function (callback) {
+            Brand.findById(req.params.id).exec(callback)
+        },
+        brand_products: function (callback) {
+            Product.find({
+                'brand': req.body.brandId
+            }).exec(callback)
+        },
+    }, function (err, results) {
+        if (err) {
+            return next(err);
+        }
+        for (let product_iter = 0; product_iter < results.brand_products.length; product_iter++) {
+            Product.findByIdAndRemove(results.brand_products[product_iter]._id, function (err) {
+                if (err) {
+                    return next(err);
+                }
+                // Success
+            });
+        }
+        Brand.findByIdAndRemove(req.body.brandId, function (err) {
+            if (err) {
+                return next(err);
+            }
+            // Success
+            res.redirect('/brand/all');
+        })
+    })
 };
 
 // Display brand update form on GET
@@ -252,13 +302,14 @@ exports.brand_update_post = [
             website_url: req.body.website_url,
             _id: req.params.id
         });
+        console.log('Brand Url: ' + brand.url);
 
         // check for errors
         if (!errors.isEmpty()) {
             // There are error in submitted data. Render the form again with sanitized values and show error messages.
 
             res.render('brand_create', {
-                title: 'AUpdate Brand',
+                title: 'Update Brand',
                 brand: brand,
                 errors: errors.array()
             });
@@ -266,11 +317,14 @@ exports.brand_update_post = [
         } else {
             // submitted form data is valid
 
-            Brand.findByIdAndUpdate(req.params.id, brand, {}, function (err, updatedBrand) {
+            Brand.findByIdAndUpdate(req.params.id, brand, {
+                new: true
+            }, function (err, updatedBrand) {
                 if (err) {
                     return next(err);
                 }
                 // Successful - redirect to updated brand page.
+                // console.log(updatedBrand.url);
                 res.redirect(updatedBrand.url);
             });
 

@@ -79,7 +79,7 @@ exports.category_create_post = [
     // validate and sanitize the data fields
     body('name', 'Name must be specified. (must be 3 characters long)').trim().isLength({
         min: 3
-    }).escape(),
+    }),
     body('image_url').isURL().withMessage('Please provide a valid url'),
 
     // Process req after data validation and sanitization
@@ -149,10 +149,69 @@ exports.category_delete_post = function (req, res) {
 
 // Display Category update form on GET
 exports.category_update_get = function (req, res) {
-    res.send('NOT IMPLEMENTED: GET Category update form.');
+    Category.findById(req.params.id)
+        .exec(function (err, category) {
+            if (err) {
+                return next(err);
+            }
+            if (category == null) { // Category not found in db
+                var error = new Error('Category not found.');
+                error.status = 404;
+                return next(error);
+            }
+            // Success - So, render.
+            res.render('category_form', {
+                title: 'Update Category',
+                category: category
+            });
+        })
 };
 
 // Handle Category update form on POST
-exports.category_update_post = function (req, res) {
-    res.send('NOT IMPLEMENTED: POST Category update form.');
-};
+exports.category_update_post = [
+
+    // validate and sanitize the data fields
+    body('name', 'Name must be specified. (must be 3 characters long)').trim().isLength({
+        min: 3
+    }),
+    body('image_url').isURL().withMessage('Please provide a valid url'),
+
+    // Process req after data validation and sanitization
+    (req, res, next) => {
+
+        // Extract validation errors from req
+        const errors = validationResult(req);
+
+        // Create new category object with escaped and trimmed data
+        const category = new Category({
+            name: req.body.name,
+            image_url: req.body.image_url,
+            _id: req.params.id
+        });
+
+        // Check for errors
+        if (!errors.isEmpty()) {
+            // There are errors in submitted form. Render form again
+            res.render('category_form', {
+                title: 'Update Category',
+                category: category,
+                errors: errors.array()
+            });
+            return;
+        } else {
+            // submitted form data is valid 
+
+            // update
+            Category.findByIdAndUpdate(req.params.id, category, {
+                new: true
+            }, function (err, updatedCategory) {
+                if (err) {
+                    return next(err);
+                }
+                // Success - go to detail page
+                res.redirect(updatedCategory.url)
+            });
+        }
+    }
+
+];

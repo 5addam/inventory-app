@@ -21,7 +21,7 @@ router.post('/create', brand_controller.brand_create_post);
 router.get('/:id/delete', brand_controller.brand_delete_get);
 
 // POST req: Delete a Brand
-router.get('/:id/delete', brand_controller.brand_delete_post);
+router.post('/:id/delete', brand_controller.brand_delete_post);
 
 // GET req: Update a Brand
 router.get('/:id/update', brand_controller.brand_update_get);

@@ -408,7 +408,9 @@ exports.product_update_post = [
         } else {
             // Form data is valid. Update the record
 
-            Product.findByIdAndUpdate(req.params.id, product, {}, function (err, updatedProduct) {
+            Product.findByIdAndUpdate(req.params.id, product, {
+                new: true
+            }, function (err, updatedProduct) {
                 if (err) {
                     return next(err);
                 }

@@ -21,7 +21,7 @@ CategorySchema
 CategorySchema
     .virtual('edit_url')
     .get(function () {
-        return '/category/' + this.id;
+        return '/category/' + this._id;
     });
 
 module.exports = mongoose.model('Category', CategorySchema)

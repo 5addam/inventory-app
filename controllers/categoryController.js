@@ -24,7 +24,7 @@ exports.all_categories = function (req, res) {
             }
             // Successful - so, render.
             res.render('categories_list', {
-                title: 'List of Categories',
+                title: 'Categories',
                 categories_list: list_categories
             });
         });

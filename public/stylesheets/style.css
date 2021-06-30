@@ -72,7 +72,8 @@ body {
 }
 
 .navbar-collapse {
-  justify-content: center;
+  justify-content: end;
+  margin-right: 50px;
 }
 
 .nav-item {
@@ -91,10 +92,11 @@ body {
 
 /* PRODUCT LIST STYLE  */
 
-.product-list-title {
+.title {
   font-weight: bold;
   margin: 10px;
   text-align: center;
+  
 }
 
 .product-list-container {

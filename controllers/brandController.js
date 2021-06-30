@@ -21,7 +21,7 @@ exports.all_brands = function (req, res) {
 
             // Successful, so render.
             res.render('brand_list', {
-                title: 'List of Brands',
+                title: 'Brands',
                 brand_list: list_brands
             });
         });

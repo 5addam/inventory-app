@@ -1,22 +1,36 @@
 extends layout
 
 block content
-  h1= title
 
   - brand_list.sort(function(a, b) {let textA = a.name.toUpperCase(); let textB = a.name.toUpperCase(); return (textA < textB) ? -1 : (textA > textB) ? 1 : 0; });
-  each brand in brand_list 
-    div.card.mb-3
-      img.card-img.top(src=brand.image_url alt="brand image")
-      div.card-body
-        h5.card-title #{brand.name}
-  //- h1 Dynamic content 
+  div(id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel")
+    .carousel-indicators
+      each brand,index in brand_list 
+        if index == 0
+          button.active(type='button' data-bs-target="#carouselExampleCaptions" data-bs-slide-to=`${index}` aria-current="true" `slide ${index}`)
+        else 
+          button(type='button' data-bs-target="#carouselExampleCaptions" data-bs-slide-to=`${index}` aria-label=`slide ${index}`)
+    div.carousel-inner
+      each brand,index in brand_list 
+        if index == 0
+          .carousel-item.active 
+            img.d-block.w-100(src=brand.image_url)
+            div.carousel-caption.d-none.d-md-block
+              h5 #{brand.name}
+        else 
+          .carousel-item
+            img.d-block.w-100(src=brand.image_url)
+            div.carousel-caption.d-none.d-md-block
+              h5 #{brand.name}
+    button.carousel-control-prev(type='button' data-bs-target="#carouselExampleCaptions" data-bs-slide="prev")
+      span.carousel-control-prev-icon(aria-hidden="true")
+      span.visually-hidden Previous 
+    button.carousel-control-next(type='button' data-bs-target="#carouselExampleCaptions" data-bs-slide="next")
+      span.carousel-control-next-icon(aria-hidden="true")
+      span.visually-hidden Next
 
-  //- if error 
-  //-   p Error getting data from db 
-  //- else 
-  //-   p The Inventory has the following record counts: 
 
-  //-   ul 
-  //-     li #[strong Products:] !{data.product_count}
-  //-     li #[strong Brands:] !{data.brand_count}
-  //-     li #[strong Categories:] !{data.category_count}
+    //- div.card.mb-3
+    //-   img.card-img.top(src=brand.image_url alt="brand image")
+    //-   div.card-body
+    //-     h5.card-title #{brand.name}

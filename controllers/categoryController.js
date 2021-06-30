@@ -139,12 +139,62 @@ exports.category_create_post = [
 
 // Display Category delete form on GET
 exports.category_delete_get = function (req, res) {
-    res.send('NOT IMPLEMENTED: GET Category delete form.');
+    async.parallel({
+        category: function (callback) {
+            Category.findById(req.params.id).exec(callback)
+        },
+        category_products: function (callback) {
+            Product.find({
+                'category': req.params.id
+            }).populate('brand').exec(callback)
+        },
+    }, function (err, results) {
+        if (err) {
+            return next(err);
+        }
+        if (results.category == null) { // No results
+            res.redirect('/category/all');
+        }
+        // Success - so, render
+        res.render('category_delete', {
+            title: 'Delete Category',
+            category: results.category,
+            category_products: results.category_products
+        });
+    });
 };
 
 // Handle Category delete form on POST
 exports.category_delete_post = function (req, res) {
-    res.send('NOT IMPLEMENTED: POST Category delete form.');
+    async.parallel({
+        category: function (callback) {
+            Category.findById(req.params.id).exec(callback)
+        },
+        category_products: function (callback) {
+            Product.find({
+                'category': req.body.brandId
+            }).exec(callback)
+        },
+    }, function (err, results) {
+        if (err) {
+            return next(err);
+        }
+        for (let product_iter = 0; product_iter < results.category_products.length; product_iter++) {
+            Product.findByIdAndRemove(results.category_products[product_iter]._id, function (err) {
+                if (err) {
+                    return next(err);
+                }
+                // Success
+            });
+        }
+        Category.findByIdAndRemove(req.body.categoryId, function (err) {
+            if (err) {
+                return next(err);
+            }
+            // Success
+            res.redirect('/category/all');
+        })
+    })
 };
 
 // Display Category update form on GET

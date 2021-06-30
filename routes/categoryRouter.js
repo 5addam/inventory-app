@@ -6,7 +6,7 @@ const category_controller = require('../controllers/categoryController');
 
 // CATEGORY ROUTERS //
 
- router.get('/',category_controller.index);
+router.get('/', category_controller.index);
 
 // GET req for creating a new Category
 router.get('/create', category_controller.category_create_get);
@@ -21,7 +21,7 @@ router.post('/create', category_controller.category_create_post);
 router.get('/:id/delete', category_controller.category_delete_get);
 
 // POST req: Delete a Category
-router.get('/:id/delete', category_controller.category_delete_post);
+router.post('/:id/delete', category_controller.category_delete_post);
 
 // GET req: Update a Category
 router.get('/:id/update', category_controller.category_update_get);
